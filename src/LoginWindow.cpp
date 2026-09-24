@@ -2,6 +2,7 @@
 #include "UserWindow.h"
 #include "ServerStub.h"
 #include "VigenereCipher.h"
+#include "Client.h"
 #include <QVBoxLayout>
 #include <QMessageBox>
 #include <QApplication>
@@ -41,7 +42,6 @@ LoginWindow::LoginWindow(QWidget *parent) : QWidget(parent) {
 
     connect(loginButton, &QPushButton::clicked, this, &LoginWindow::onLoginClicked);
 
-    // Подсказка для теста
     statusLabel->setText("Подсказка: admin / 12345");
     statusLabel->setStyleSheet("color: gray; font-size: 11px;");
 }
@@ -55,12 +55,14 @@ void LoginWindow::onLoginClicked() {
         return;
     }
 
-    // Формируем запрос к серверу: auth&login&password
     QString request = "auth&" + login + "&" + password;
     QString response = ServerStub::processRequest(request);
 
     if (response == "auth&ok") {
-        // Успех — открываем главное окно
+        // ✅ Singleton: сохраняем текущего пользователя
+        Client::instance().setCurrentUser(login);
+        Client::instance().setLoggedIn(true);
+
         UserWindow *userWindow = new UserWindow();
         userWindow->setAttribute(Qt::WA_DeleteOnClose);
         userWindow->show();

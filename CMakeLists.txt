@@ -13,6 +13,7 @@ find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 
 add_executable(lab-crypto
     src/main.cpp
+    src/Client.cpp
     src/LoginWindow.cpp
     src/UserWindow.cpp
     src/VigenereWindow.cpp

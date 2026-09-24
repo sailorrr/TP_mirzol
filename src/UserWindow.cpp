@@ -4,6 +4,7 @@
 #include "SecantWindow.h"
 #include "GraphWindow.h"
 #include "LoginWindow.h"
+#include "Client.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QApplication>
@@ -12,12 +13,21 @@ UserWindow::UserWindow(QWidget *parent) : QWidget(parent) {
     setWindowTitle("Главное меню — Лабораторная работа");
     resize(500, 400);
 
+    // ✅ Singleton: получаем имя текущего пользователя
+    QString username = Client::instance().currentUser();
+
     QLabel *title = new QLabel("Главное меню", this);
     title->setAlignment(Qt::AlignCenter);
     QFont f = title->font();
     f.setPointSize(18);
     f.setBold(true);
     title->setFont(f);
+
+    // ✅ Отображаем пользователя (метка)
+    QLabel *userLabel = new QLabel(
+        QString("👤 Пользователь: <b>%1</b>").arg(username.isEmpty() ? "—" : username), this);
+    userLabel->setAlignment(Qt::AlignCenter);
+    userLabel->setStyleSheet("QLabel { color: #2e7d32; font-size: 13px; padding: 5px; }");
 
     QLabel *subtitle = new QLabel("Выберите модуль:", this);
     subtitle->setAlignment(Qt::AlignCenter);
@@ -38,6 +48,7 @@ UserWindow::UserWindow(QWidget *parent) : QWidget(parent) {
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addWidget(title);
+    layout->addWidget(userLabel);
     layout->addWidget(subtitle);
     layout->addSpacing(15);
     layout->addWidget(btnVigenere);
@@ -56,30 +67,38 @@ UserWindow::UserWindow(QWidget *parent) : QWidget(parent) {
 }
 
 void UserWindow::openVigenere() {
+    Client::instance().logOperation("Открыт модуль: Шифр Виженера");
     VigenereWindow *w = new VigenereWindow();
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
 }
 
 void UserWindow::openMD5() {
+    Client::instance().logOperation("Открыт модуль: md5-хэш");
     MD5Window *w = new MD5Window();
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
 }
 
 void UserWindow::openSecant() {
+    Client::instance().logOperation("Открыт модуль: Метод секущих");
     SecantWindow *w = new SecantWindow();
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
 }
 
 void UserWindow::openGraph() {
+    Client::instance().logOperation("Открыт модуль: Проверка цикла графа");
     GraphWindow *w = new GraphWindow();
     w->setAttribute(Qt::WA_DeleteOnClose);
     w->show();
 }
 
 void UserWindow::logout() {
+    // ✅ Singleton: логируем выход
+    Client::instance().setLoggedIn(false);
+    Client::instance().setCurrentUser("");
+
     LoginWindow *login = new LoginWindow();
     login->setAttribute(Qt::WA_DeleteOnClose);
     login->show();
