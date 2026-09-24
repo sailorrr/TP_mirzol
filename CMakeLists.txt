@@ -16,6 +16,7 @@ add_executable(lab-crypto
     src/Client.cpp
     src/LoginWindow.cpp
     src/UserWindow.cpp
+    src/HistoryWindow.cpp
     src/VigenereWindow.cpp
     src/MD5Window.cpp
     src/SecantWindow.cpp

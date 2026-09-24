@@ -15,6 +15,7 @@ private slots:
     void openMD5();
     void openSecant();
     void openGraph();
+    void openHistory();
     void logout();
 };
 

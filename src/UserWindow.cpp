@@ -3,6 +3,7 @@
 #include "MD5Window.h"
 #include "SecantWindow.h"
 #include "GraphWindow.h"
+#include "HistoryWindow.h"
 #include "LoginWindow.h"
 #include "Client.h"
 #include <QVBoxLayout>
@@ -11,9 +12,8 @@
 
 UserWindow::UserWindow(QWidget *parent) : QWidget(parent) {
     setWindowTitle("Главное меню — Лабораторная работа");
-    resize(500, 400);
+    resize(500, 500);
 
-    // ✅ Singleton: получаем имя текущего пользователя
     QString username = Client::instance().currentUser();
 
     QLabel *title = new QLabel("Главное меню", this);
@@ -23,7 +23,6 @@ UserWindow::UserWindow(QWidget *parent) : QWidget(parent) {
     f.setBold(true);
     title->setFont(f);
 
-    // ✅ Отображаем пользователя (метка)
     QLabel *userLabel = new QLabel(
         QString("👤 Пользователь: <b>%1</b>").arg(username.isEmpty() ? "—" : username), this);
     userLabel->setAlignment(Qt::AlignCenter);
@@ -36,14 +35,15 @@ UserWindow::UserWindow(QWidget *parent) : QWidget(parent) {
     QPushButton *btnMD5 = new QPushButton("🔑 md5-хэш", this);
     QPushButton *btnSecant = new QPushButton("📐 Метод секущих", this);
     QPushButton *btnGraph = new QPushButton("🔀 Проверка цикла графа", this);
+    QPushButton *btnHistory = new QPushButton("📊 История операций", this);
     QPushButton *btnLogout = new QPushButton("🚪 Выйти", this);
 
-    // Стиль для кнопок
     QString style = "QPushButton { padding: 12px; font-size: 14px; }";
     btnVigenere->setStyleSheet(style);
     btnMD5->setStyleSheet(style);
     btnSecant->setStyleSheet(style);
     btnGraph->setStyleSheet(style);
+    btnHistory->setStyleSheet("QPushButton { padding: 12px; font-size: 14px; background-color: #2196f3; color: white; }");
     btnLogout->setStyleSheet("QPushButton { padding: 12px; font-size: 14px; background-color: #f44336; color: white; }");
 
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -55,7 +55,9 @@ UserWindow::UserWindow(QWidget *parent) : QWidget(parent) {
     layout->addWidget(btnMD5);
     layout->addWidget(btnSecant);
     layout->addWidget(btnGraph);
-    layout->addSpacing(15);
+    layout->addSpacing(10);
+    layout->addWidget(btnHistory);
+    layout->addSpacing(10);
     layout->addWidget(btnLogout);
     layout->addStretch();
 
@@ -63,6 +65,7 @@ UserWindow::UserWindow(QWidget *parent) : QWidget(parent) {
     connect(btnMD5, &QPushButton::clicked, this, &UserWindow::openMD5);
     connect(btnSecant, &QPushButton::clicked, this, &UserWindow::openSecant);
     connect(btnGraph, &QPushButton::clicked, this, &UserWindow::openGraph);
+    connect(btnHistory, &QPushButton::clicked, this, &UserWindow::openHistory);
     connect(btnLogout, &QPushButton::clicked, this, &UserWindow::logout);
 }
 
@@ -94,8 +97,13 @@ void UserWindow::openGraph() {
     w->show();
 }
 
+void UserWindow::openHistory() {
+    HistoryWindow *w = new HistoryWindow();
+    w->setAttribute(Qt::WA_DeleteOnClose);
+    w->show();
+}
+
 void UserWindow::logout() {
-    // ✅ Singleton: логируем выход
     Client::instance().setLoggedIn(false);
     Client::instance().setCurrentUser("");
 
