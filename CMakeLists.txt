@@ -9,10 +9,16 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets)
 
 add_executable(lab-crypto
     src/main.cpp
+    src/LoginWindow.cpp
+    src/UserWindow.cpp
+    src/VigenereWindow.cpp
+    src/MD5Window.cpp
+    src/SecantWindow.cpp
+    src/GraphWindow.cpp
     src/VigenereCipher.cpp
     src/MD5.cpp
     src/SecantMethod.cpp
@@ -20,4 +26,4 @@ add_executable(lab-crypto
     src/ServerStub.cpp
 )
 
-target_link_libraries(lab-crypto PRIVATE Qt6::Core)
+target_link_libraries(lab-crypto PRIVATE Qt6::Core Qt6::Widgets)
