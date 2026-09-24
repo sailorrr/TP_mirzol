@@ -1,5 +1,0 @@
-C:/Users/adminn/lab-crypto/build/CMakeFiles/lab-crypto.dir
-C:/Users/adminn/lab-crypto/build/CMakeFiles/edit_cache.dir
-C:/Users/adminn/lab-crypto/build/CMakeFiles/rebuild_cache.dir
-C:/Users/adminn/lab-crypto/build/CMakeFiles/lab-crypto_autogen_timestamp_deps.dir
-C:/Users/adminn/lab-crypto/build/CMakeFiles/lab-crypto_autogen.dir
