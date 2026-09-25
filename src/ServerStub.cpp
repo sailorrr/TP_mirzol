@@ -2,9 +2,10 @@
 #include <QStringList>
 
 QString ServerStub::processRequest(const QString& request) {
-    QStringList parts = request.split('&');
+    if (request.trimmed().isEmpty()) return "error&empty";
 
-    if (parts.isEmpty()) {
+    QStringList parts = request.split('&');
+    if (parts.isEmpty() || parts[0].isEmpty()) {
         return "error&empty";
     }
 
@@ -18,7 +19,6 @@ QString ServerStub::processRequest(const QString& request) {
 }
 
 QString ServerStub::handleAuth(const QString& login, const QString& password) {
-    // Заглушка: правильный логин = "admin", пароль = "12345"
     if (login == "admin" && password == "12345") {
         return "auth&ok";
     }

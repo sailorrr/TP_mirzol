@@ -29,3 +29,6 @@ add_executable(lab-crypto
 )
 
 target_link_libraries(lab-crypto PRIVATE Qt6::Core Qt6::Widgets)
+
+enable_testing()
+add_subdirectory(tests)
